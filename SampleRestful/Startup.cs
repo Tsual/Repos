@@ -10,22 +10,28 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SampleRestful.Database.Context;
 
 namespace SampleRestful
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment HostingEnvironment, ILoggerFactory LoggerFactory)
         {
             Configuration = configuration;
+            this.HostingEnvironment = HostingEnvironment;
+            this.LoggerFactory = LoggerFactory;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
+        public ILoggerFactory LoggerFactory { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDbContext<BasicDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
